@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
-import android.hardware.SensorListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -70,14 +69,17 @@ public class CompassActivity extends AppCompatActivity {
     SensorEventListener sensorEventListenerAccelrometer = new SensorEventListener() {
         @Override
         public void onSensorChanged(SensorEvent sensorEvent) {
-            floatGravity = sensorEvent.values;
+            floatGravity = lowpass(sensorEvent.values, floatGravity);
 
             SensorManager.getRotationMatrix(floatRotationMatrix, null, floatGravity, floatGeoMagnetic);
             SensorManager.getOrientation(floatRotationMatrix, floatOrientation);
 
+            float lastDegrees = currentDegrees;
             currentDegrees = (float) (((floatOrientation[0]*180/Math.PI) + 360) % 360);
-            compassNeedle.setRotation(-currentDegrees);
-            degreeDisplay.setText("Heading: " + getDirection(currentDegrees) + " " + (int) (currentDegrees) + " °");
+            if(Math.abs(lastDegrees-currentDegrees) > 0.5) {
+                compassNeedle.setRotation(-currentDegrees);
+                degreeDisplay.setText(getDirection(currentDegrees) + " " + (int) currentDegrees + " °");
+            }
         }
 
         @Override
@@ -88,15 +90,19 @@ public class CompassActivity extends AppCompatActivity {
     SensorEventListener sensorEventListenerMagneticField = new SensorEventListener() {
         @Override
         public void onSensorChanged(SensorEvent sensorEvent) {
-            floatGeoMagnetic = sensorEvent.values;
+            floatGeoMagnetic = lowpass(sensorEvent.values, floatGeoMagnetic);
 
             SensorManager.getRotationMatrix(floatRotationMatrix, null, floatGravity, floatGeoMagnetic);
             SensorManager.getOrientation(floatRotationMatrix, floatOrientation);
 
+            float lastDegrees = currentDegrees;
             currentDegrees = (float) (((floatOrientation[0]*180/Math.PI) + 360) % 360);
-            compassNeedle.setRotation(-currentDegrees);
-            degreeDisplay.setText("Heading: " + getDirection(currentDegrees) + " " + (int) (currentDegrees) + " °");
+            if(Math.abs(lastDegrees-currentDegrees) > 0.5) {
+                compassNeedle.setRotation(-currentDegrees);
+                degreeDisplay.setText(getDirection(currentDegrees) + " " + (int) currentDegrees + " °");
+            }
         }
+
 
         @Override
         public void onAccuracyChanged(Sensor sensor, int i) {
@@ -119,5 +125,14 @@ public class CompassActivity extends AppCompatActivity {
         else if (degrees <= 100 && degrees > 80)
             return "E";
         else return "NE";
+    }
+
+    private float[] lowpass( float[] input, float[] output) {
+        if (output == null) return input;
+
+        for(int i = 0; i<input.length; i++) {
+            output[i] = output[i] + 0.15f * (input[i]-output[i]);
+        }
+        return output;
     }
 }

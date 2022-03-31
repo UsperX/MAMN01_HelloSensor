@@ -11,3 +11,6 @@ Assignment in the course MAMN01 - Advanced Interaction Design
 - [Simple compass code with Android Studio] (https://www.codespeedy.com/simple-compass-code-with-android-studio/)
 - [How to Create a Compass in Android Code – Tutorial and Source Code] (https://www.androidcode.ninja/android-compass-code-example/)
 - [How to create your own Compass Android App using Magnetic Field and Accelerometer Sensors in Android Studio? – Complete Source code] (https://programmerworld.co/android/how-to-create-your-own-compass-android-app-using-magnetic-field-and-accelerometer-sensors-in-android-studio-complete-source-code/)
+
+## For low-pass filter:
+- [Github: Low-Pass-Filter-To-Android-Sensors](https://github.com/Bhide/Low-Pass-Filter-To-Android-Sensors)
