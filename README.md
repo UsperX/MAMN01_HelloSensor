@@ -14,3 +14,7 @@ Assignment in the course MAMN01 - Advanced Interaction Design
 
 ## For low-pass filter:
 - [Github: Low-Pass-Filter-To-Android-Sensors](https://github.com/Bhide/Low-Pass-Filter-To-Android-Sensors)
+
+## For accelerometer: 
+- [Android Developer: SensorEvent](https://developer.android.com/reference/android/hardware/SensorEvent.html)
+- [Android Developer: SensorManager](https://developer.android.com/reference/android/hardware/SensorManager.html) 
