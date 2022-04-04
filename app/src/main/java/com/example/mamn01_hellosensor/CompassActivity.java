@@ -46,38 +46,43 @@ public class CompassActivity extends AppCompatActivity {
         sensorAccelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorMagneticField = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 
-        sensorManager.registerListener(sensorEventListenerAccelrometer, sensorAccelerometer, SensorManager.SENSOR_DELAY_GAME);
-        sensorManager.registerListener(sensorEventListenerMagneticField, sensorMagneticField, SensorManager.SENSOR_DELAY_GAME);
+        sensorManager.registerListener(sensorEventListener, sensorAccelerometer, SensorManager.SENSOR_DELAY_UI);
+        sensorManager.registerListener(sensorEventListener, sensorMagneticField, SensorManager.SENSOR_DELAY_UI);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-
         //Stop listener to save battery
-        sensorManager.unregisterListener(sensorEventListenerAccelrometer);
-        sensorManager.unregisterListener(sensorEventListenerMagneticField);
+        sensorManager.unregisterListener(sensorEventListener);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        sensorManager.registerListener(sensorEventListenerAccelrometer, sensorAccelerometer, SensorManager.SENSOR_DELAY_GAME);
-        sensorManager.registerListener(sensorEventListenerMagneticField, sensorMagneticField, SensorManager.SENSOR_DELAY_GAME);
+        sensorManager.registerListener(sensorEventListener, sensorAccelerometer, SensorManager.SENSOR_DELAY_UI);
+        sensorManager.registerListener(sensorEventListener, sensorMagneticField, SensorManager.SENSOR_DELAY_UI);
     }
 
-    SensorEventListener sensorEventListenerAccelrometer = new SensorEventListener() {
+    SensorEventListener sensorEventListener = new SensorEventListener() {
         @Override
-        public void onSensorChanged(SensorEvent sensorEvent) {
-            floatGravity = lowpass(sensorEvent.values, floatGravity);
+        public void onSensorChanged(SensorEvent event) {
+            if (event == null) {
+                return;
+            }
+            if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+                floatGravity = lowpass(event.values, floatGravity);
+            } else if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
+                floatGeoMagnetic = lowpass(event.values, floatGeoMagnetic);
+            }
 
             SensorManager.getRotationMatrix(floatRotationMatrix, null, floatGravity, floatGeoMagnetic);
             SensorManager.getOrientation(floatRotationMatrix, floatOrientation);
 
-            float lastDegrees = currentDegrees;
-            currentDegrees = (float) (((floatOrientation[0]*180/Math.PI) + 360) % 360);
-            if(Math.abs(lastDegrees-currentDegrees) > 0.5) {
-                compassNeedle.setRotation(-currentDegrees);
+            float previousDegrees = currentDegrees;
+            currentDegrees = (float) ((Math.toDegrees(floatOrientation[0]) + 360.0) % 360.0);
+            if (Math.abs(currentDegrees-previousDegrees) > 0.5) {
+                compassNeedle.setRotation(-Math.round(currentDegrees));
                 degreeDisplay.setText(getDirection(currentDegrees) + " " + (int) currentDegrees + " °");
             }
         }
@@ -87,27 +92,6 @@ public class CompassActivity extends AppCompatActivity {
         }
     };
 
-    SensorEventListener sensorEventListenerMagneticField = new SensorEventListener() {
-        @Override
-        public void onSensorChanged(SensorEvent sensorEvent) {
-            floatGeoMagnetic = lowpass(sensorEvent.values, floatGeoMagnetic);
-
-            SensorManager.getRotationMatrix(floatRotationMatrix, null, floatGravity, floatGeoMagnetic);
-            SensorManager.getOrientation(floatRotationMatrix, floatOrientation);
-
-            float lastDegrees = currentDegrees;
-            currentDegrees = (float) (((floatOrientation[0]*180/Math.PI) + 360) % 360);
-            if(Math.abs(lastDegrees-currentDegrees) > 0.5) {
-                compassNeedle.setRotation(-currentDegrees);
-                degreeDisplay.setText(getDirection(currentDegrees) + " " + (int) currentDegrees + " °");
-            }
-        }
-
-
-        @Override
-        public void onAccuracyChanged(Sensor sensor, int i) {
-        }
-    };
 
     private String getDirection(float degrees) {
         if (degrees >= 350 || degrees <= 10)
@@ -129,9 +113,10 @@ public class CompassActivity extends AppCompatActivity {
 
     private float[] lowpass( float[] input, float[] output) {
         if (output == null) return input;
+        final float alpha = 0.8f;
 
         for(int i = 0; i<input.length; i++) {
-            output[i] = output[i] + 0.15f * (input[i]-output[i]);
+            output[i] = alpha * output[i] + (1-alpha) * input[i];
         }
         return output;
     }
