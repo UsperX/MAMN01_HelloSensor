@@ -17,4 +17,13 @@ Assignment in the course MAMN01 - Advanced Interaction Design
 
 ## For accelerometer: 
 - [Android Developer: SensorEvent](https://developer.android.com/reference/android/hardware/SensorEvent.html)
-- [Android Developer: SensorManager](https://developer.android.com/reference/android/hardware/SensorManager.html) 
+- [Android Developer: SensorManager](https://developer.android.com/reference/android/hardware/SensorManager.html)
+
+## For rumble:
+- [Android Developer: Haptics](https://source.android.com/devices/input/haptics)
+- [StackOverflow: How to make Android device vibrate?](https://stackoverflow.com/questions/13950338/how-to-make-an-android-device-vibrate-with-different-frequency)
+
+## Color circle image:
+https://en.wikipedia.org/wiki/Color_wheel
+
+https://stackoverflow.com/questions/3018313/algorithm-to-convert-rgb-to-hsv-and-hsv-to-rgb-in-range-0-255-for-both

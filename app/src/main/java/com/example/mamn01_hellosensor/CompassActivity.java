@@ -6,7 +6,10 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,6 +19,7 @@ public class CompassActivity extends AppCompatActivity {
     private SensorManager sensorManager;
     private Sensor sensorAccelerometer;
     private Sensor sensorMagneticField;
+    private Vibrator vibrator;
 
     // Define the compass picture that will be used
     private ImageView compassNeedle;
@@ -23,6 +27,7 @@ public class CompassActivity extends AppCompatActivity {
 
     // Record the angle turned of the compass picture;
     private float currentDegrees = 0f;
+    private boolean rumble = true;
 
     private float[] floatGravity = new float[3];
     private float[] floatGeoMagnetic = new float[3];
@@ -42,12 +47,13 @@ public class CompassActivity extends AppCompatActivity {
 
         // Initialize android device sensor capabilities
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 
         sensorAccelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorMagneticField = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 
-        sensorManager.registerListener(sensorEventListener, sensorAccelerometer, SensorManager.SENSOR_DELAY_UI);
-        sensorManager.registerListener(sensorEventListener, sensorMagneticField, SensorManager.SENSOR_DELAY_UI);
+        sensorManager.registerListener(sensorEventListener, sensorAccelerometer, SensorManager.SENSOR_DELAY_GAME);
+        sensorManager.registerListener(sensorEventListener, sensorMagneticField, SensorManager.SENSOR_DELAY_GAME);
     }
 
     @Override
@@ -60,8 +66,8 @@ public class CompassActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        sensorManager.registerListener(sensorEventListener, sensorAccelerometer, SensorManager.SENSOR_DELAY_UI);
-        sensorManager.registerListener(sensorEventListener, sensorMagneticField, SensorManager.SENSOR_DELAY_UI);
+        sensorManager.registerListener(sensorEventListener, sensorAccelerometer, SensorManager.SENSOR_DELAY_GAME);
+        sensorManager.registerListener(sensorEventListener, sensorMagneticField, SensorManager.SENSOR_DELAY_GAME);
     }
 
     SensorEventListener sensorEventListener = new SensorEventListener() {
@@ -80,11 +86,20 @@ public class CompassActivity extends AppCompatActivity {
             SensorManager.getOrientation(floatRotationMatrix, floatOrientation);
 
             float previousDegrees = currentDegrees;
-            currentDegrees = (float) ((Math.toDegrees(floatOrientation[0]) + 360.0) % 360.0);
-            if (Math.abs(currentDegrees-previousDegrees) > 0.5) {
-                compassNeedle.setRotation(-Math.round(currentDegrees));
+            currentDegrees = Math.round((float) ((Math.toDegrees(floatOrientation[0]) + 360.0) % 360.0));
+                compassNeedle.setRotation(-currentDegrees);
                 degreeDisplay.setText(getDirection(currentDegrees) + " " + (int) currentDegrees + " °");
-            }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                if ((currentDegrees < 2 || currentDegrees > 358) && !rumble ) {
+                    vibrator.vibrate(VibrationEffect.createOneShot(25, 255));
+                    rumble = true;
+                } else if ((currentDegrees % 30 < 2 || currentDegrees % 30 > 28) && !rumble) {
+                    vibrator.vibrate(VibrationEffect.createOneShot(10, 175));
+                    rumble = true;
+                } else if (currentDegrees % 30 > 3 && currentDegrees% 30 < 27 && rumble) {
+                    rumble = false;
+                };
+                }
         }
 
         @Override
@@ -113,10 +128,10 @@ public class CompassActivity extends AppCompatActivity {
 
     private float[] lowpass( float[] input, float[] output) {
         if (output == null) return input;
-        final float alpha = 0.8f;
+        final float alpha = 0.95f;
 
         for(int i = 0; i<input.length; i++) {
-            output[i] = alpha * output[i] + (1-alpha) * input[i];
+            output[i] = alpha * output[i] + (1.0f-alpha) * input[i];
         }
         return output;
     }
