@@ -1,7 +1,7 @@
 # MAMN01_HelloSensor
 Assignment in the course MAMN01 - Advanced Interaction Design
 
-# Used guides
+# Used guides:
 
 ## For initial setup:
 - [Android Developer: "Build your first app"](https://developer.android.com/training/basics/firstapp/index.html)
@@ -24,11 +24,11 @@ Assignment in the course MAMN01 - Advanced Interaction Design
 - [StackOverflow: How to make Android device vibrate?](https://stackoverflow.com/questions/13950338/how-to-make-an-android-device-vibrate-with-different-frequency)
 
 ## Color circle image:
-https://en.wikipedia.org/wiki/Color_wheel
-
-https://stackoverflow.com/questions/3018313/algorithm-to-convert-rgb-to-hsv-and-hsv-to-rgb-in-range-0-255-for-both
+- [Wikipedia: Color Wheel](https://en.wikipedia.org/wiki/Color_wheel)
+- [StackOverflow: Algorithm to convert HSV to RGB](https://stackoverflow.com/questions/3018313/algorithm-to-convert-rgb-to-hsv-and-hsv-to-rgb-in-range-0-255-for-both)
 
 ## For sound: 
-https://stackoverflow.com/questions/10451092/how-to-play-a-sound-effect-in-android
+- [Android Developer: MediaPlayer](https://developer.android.com/reference/android/media/MediaPlayer.html)
+- [StackOverflow: How to play Sound Effect in Android](https://stackoverflow.com/questions/10451092/how-to-play-a-sound-effect-in-android)
 
-https://developer.android.com/reference/android/media/MediaPlayer.html
+
