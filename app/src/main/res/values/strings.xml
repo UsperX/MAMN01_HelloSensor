@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MAMN01_HelloSensor</string>
+    <string name="app_name">HelloSensor</string>
     <string name="edit_message">Enter a message</string>
     <string name="button_compass">Compass</string>
     <string name="button_accelerometer">Accelerometer</string>

@@ -2,8 +2,6 @@ package com.example.mamn01_hellosensor;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-
-import android.content.Context;
 import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -17,9 +15,7 @@ import android.os.Vibrator;
 import android.util.DisplayMetrics;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.hardware.SensorManager;
 
 import java.io.IOException;
 
@@ -29,7 +25,7 @@ public class AccelerometerActivity extends AppCompatActivity {
     private Sensor sensorAccelerometer;
     private Vibrator vibrator;
 
-    private TextView xText, yText, zText, debuggerText;
+    private TextView xText, yText, zText;
     private ImageView dotImage, circleImage, circleBorderImage;
     private ConstraintLayout constraintLayout;
     private float[] floatGravity = new float[3];
@@ -49,7 +45,6 @@ public class AccelerometerActivity extends AppCompatActivity {
         xText = (TextView) findViewById(R.id.x_textView);
         yText = (TextView) findViewById(R.id.y_textView);
         zText = (TextView) findViewById(R.id.z_textView);
-        debuggerText = (TextView) findViewById(R.id.debbugerText);
         dotImage = (ImageView) findViewById(R.id.imageDot);
         circleImage = (ImageView) findViewById(R.id.outerCircleImage);
         circleBorderImage = (ImageView) findViewById(R.id.circleBorder);
@@ -232,9 +227,6 @@ public class AccelerometerActivity extends AppCompatActivity {
                 }
             }
         }
-
-
-        debuggerText.setText("Saturation: " + saturation + ", Hue: " + (int) hue);
     }
 
     public void setElements() {

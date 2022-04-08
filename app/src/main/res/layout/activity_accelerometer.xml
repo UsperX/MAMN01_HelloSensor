@@ -10,34 +10,36 @@
 
     <TextView
         android:id="@+id/x_textView"
-        android:layout_width="70dp"
-        android:layout_height="27dp"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="64dp"
+        android:layout_width="103dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="68dp"
+        android:layout_marginEnd="16dp"
         android:text="Test 1"
-        android:textSize="20sp"
+        android:textSize="34sp"
+        app:layout_constraintEnd_toStartOf="@+id/y_textView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/y_textView"
-        android:layout_width="63dp"
-        android:layout_height="27dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="64dp"
+        android:layout_width="99dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="68dp"
+        android:layout_marginEnd="144dp"
         android:text="Test 2"
-        android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/x_textView"
+        android:textSize="34sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/z_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="68dp"
         android:text="Test 3"
-        android:textSize="20sp"
+        android:textSize="34sp"
         app:layout_constraintStart_toEndOf="@+id/y_textView"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -51,17 +53,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="?android:attr/listChoiceIndicatorSingle" />
-
-    <TextView
-        android:id="@+id/debbugerText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/y_textView" />
 
     <ImageView
         android:id="@+id/circleBorder"
