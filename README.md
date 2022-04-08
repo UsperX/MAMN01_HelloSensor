@@ -27,3 +27,8 @@ Assignment in the course MAMN01 - Advanced Interaction Design
 https://en.wikipedia.org/wiki/Color_wheel
 
 https://stackoverflow.com/questions/3018313/algorithm-to-convert-rgb-to-hsv-and-hsv-to-rgb-in-range-0-255-for-both
+
+## For sound: 
+https://stackoverflow.com/questions/10451092/how-to-play-a-sound-effect-in-android
+
+https://developer.android.com/reference/android/media/MediaPlayer.html
